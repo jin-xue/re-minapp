@@ -1,0 +1,27 @@
+
+<view class="container">  
+    <view class="toast {{showToast ? 'toast-show' : ''}}">{{toastMessage}}</view>
+    <view class="banner">
+        <image src="../../resource/login/logo.png"></image>
+    </view>
+    <view class="form">
+        <text>用户名</text>
+        <view class="input-wrap">
+            <image class="input-icon" src="../../resource/login/person.png"></image>
+            <input class="username" placeholder="请输入您的账户" bindinput="onUsernameInput" />
+        </view>
+        <text>密码</text>
+        <view class="input-wrap">
+          <image class="input-icon" src="../../resource/login/password.png"></image>
+          <input class="password" password placeholder="请输入您的登陆密码" bindinput="onPasswordInput" />
+        </view>
+        <button class="login-btn" bind:tap="login">登录</button>
+    </view>
+    <view class="split">
+        <view class="split-line"></view>
+        <text class="split-text">其他登录方式</text>
+    </view>
+    <view class="other-login">
+      <button class="phone-btn">手机号快捷登录</button>
+    </view>
+</view>

@@ -1,0 +1,748 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "dashboard",
+    "description": "dashboard api",
+    "version": "1.0-SNAPSHOT",
+    "contact": {},
+    "license": {}
+  },
+  "tags": [
+    {
+      "name": "库存管理"
+    }
+  ],
+  "paths": {
+    "/v1/api/re/stock/in": {
+      "post": {
+        "summary": "入库",
+        "deprecated": false,
+        "description": "",
+        "operationId": "stockInUsingPOST",
+        "tags": [
+          "库存管理"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReStockInDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonMessage%C2%ABboolean%C2%BB"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "201": {
+            "description": "Created",
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          },
+          {
+            "device-id": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v1/api/re/stock/list": {
+      "post": {
+        "summary": "库存分页列表",
+        "deprecated": false,
+        "description": "",
+        "operationId": "findListByPageUsingPOST_2",
+        "tags": [
+          "库存管理"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReStockPageDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonMessage%C2%ABPageResult%C2%ABReStockPageVO%C2%BB%C2%BB"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "201": {
+            "description": "Created",
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          },
+          {
+            "device-id": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v1/api/re/stock/out": {
+      "post": {
+        "summary": "出库",
+        "deprecated": false,
+        "description": "",
+        "operationId": "stockOutUsingPOST",
+        "tags": [
+          "库存管理"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReStockOutDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonMessage%C2%ABboolean%C2%BB"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "201": {
+            "description": "Created",
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          },
+          {
+            "device-id": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v1/api/re/stock/record/recent": {
+      "get": {
+        "summary": "近期活动记录",
+        "deprecated": false,
+        "description": "",
+        "operationId": "recentUsingGET",
+        "tags": [
+          "库存管理"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonMessage%C2%ABList%C2%ABReStockRecentRecordVO%C2%BB%C2%BB"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          },
+          {
+            "device-id": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v1/api/re/stock/stats": {
+      "get": {
+        "summary": "库存统计",
+        "deprecated": false,
+        "description": "",
+        "operationId": "statsUsingGET",
+        "tags": [
+          "库存管理"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonMessage%C2%ABReStockStatsVO%C2%BB"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          },
+          {
+            "device-id": [
+              "global"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "JsonMessage«List«ReStockRecentRecordVO»»": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "description": "数据集",
+            "items": {
+              "$ref": "#/components/schemas/ReStockRecentRecordVO"
+            }
+          },
+          "resCode": {
+            "type": "string",
+            "description": "状态码"
+          },
+          "resMsg": {
+            "type": "string",
+            "description": "提示消息"
+          }
+        },
+        "title": "JsonMessage«List«ReStockRecentRecordVO»»"
+      },
+      "JsonMessage«PageResult«ReStockPageVO»»": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PageResult%C2%ABReStockPageVO%C2%BB"
+          },
+          "resCode": {
+            "type": "string",
+            "description": "状态码"
+          },
+          "resMsg": {
+            "type": "string",
+            "description": "提示消息"
+          }
+        },
+        "title": "JsonMessage«PageResult«ReStockPageVO»»"
+      },
+      "JsonMessage«ReStockStatsVO»": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ReStockStatsVO"
+          },
+          "resCode": {
+            "type": "string",
+            "description": "状态码"
+          },
+          "resMsg": {
+            "type": "string",
+            "description": "提示消息"
+          }
+        },
+        "title": "JsonMessage«ReStockStatsVO»"
+      },
+      "JsonMessage«boolean»": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "boolean",
+            "description": "数据集"
+          },
+          "resCode": {
+            "type": "string",
+            "description": "状态码"
+          },
+          "resMsg": {
+            "type": "string",
+            "description": "提示消息"
+          }
+        },
+        "title": "JsonMessage«boolean»"
+      },
+      "PageResult«ReStockPageVO»": {
+        "type": "object",
+        "properties": {
+          "pageNum": {
+            "type": "integer",
+            "format": "int32",
+            "description": "页号"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "description": "每页条数"
+          },
+          "pages": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总页数"
+          },
+          "resultData": {
+            "type": "array",
+            "description": "结果集",
+            "items": {
+              "$ref": "#/components/schemas/ReStockPageVO"
+            }
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "description": "当前页的数量"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总记录数"
+          }
+        },
+        "title": "PageResult«ReStockPageVO»"
+      },
+      "ReStockInDTO": {
+        "type": "object",
+        "required": [
+          "goodsId",
+          "qty"
+        ],
+        "properties": {
+          "batchNo": {
+            "type": "string",
+            "description": "批次号(新建批次时必填)"
+          },
+          "goodsId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "商品ID"
+          },
+          "purchasePrice": {
+            "type": "number",
+            "description": "进价(新建批次必填)"
+          },
+          "qty": {
+            "type": "integer",
+            "format": "int32",
+            "description": "入库数量"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注"
+          },
+          "supplier": {
+            "type": "string",
+            "description": "供应商"
+          },
+          "warehouse": {
+            "type": "string",
+            "description": "仓库"
+          }
+        },
+        "title": "ReStockInDTO",
+        "description": "入库"
+      },
+      "ReStockOutDTO": {
+        "type": "object",
+        "required": [
+          "goodsId",
+          "qty",
+          "sellPrice"
+        ],
+        "properties": {
+          "batchId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "批次ID(可选：不传则自动按批次扣减)"
+          },
+          "goodsId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "商品ID"
+          },
+          "qty": {
+            "type": "integer",
+            "format": "int32",
+            "description": "出库数量"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注"
+          },
+          "sellPrice": {
+            "type": "number",
+            "description": "出库售价"
+          }
+        },
+        "title": "ReStockOutDTO",
+        "description": "出库"
+      },
+      "ReStockPageDTO": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "品牌"
+          },
+          "category": {
+            "type": "string",
+            "description": "分类"
+          },
+          "goodsName": {
+            "type": "string",
+            "description": "商品名称"
+          },
+          "orderBy": {
+            "type": "string",
+            "description": "排序字段"
+          },
+          "pageNum": {
+            "type": "integer",
+            "format": "int32",
+            "description": "页号"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "description": "每页条数"
+          },
+          "sort": {
+            "type": "string",
+            "description": "排序规则：desc降序，asc正序"
+          }
+        },
+        "title": "ReStockPageDTO",
+        "description": "库存分页查询"
+      },
+      "ReStockPageVO": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "品牌"
+          },
+          "category": {
+            "type": "string",
+            "description": "分类"
+          },
+          "goodsCode": {
+            "type": "string",
+            "description": "商品编码"
+          },
+          "goodsId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "商品ID"
+          },
+          "goodsName": {
+            "type": "string",
+            "description": "商品名称"
+          },
+          "img": {
+            "type": "string",
+            "description": "图片"
+          },
+          "profit": {
+            "type": "number",
+            "description": "利润"
+          },
+          "profitRate": {
+            "type": "number",
+            "description": "利润率"
+          },
+          "purchasePrice": {
+            "type": "number",
+            "description": "进价"
+          },
+          "sellPrice": {
+            "type": "number",
+            "description": "售价"
+          },
+          "spec": {
+            "type": "string",
+            "description": "规格"
+          },
+          "stockQty": {
+            "type": "integer",
+            "format": "int32",
+            "description": "当前库存"
+          },
+          "stockValue": {
+            "type": "number",
+            "description": "库存价值(按进价)"
+          },
+          "totalInQty": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总入库数量"
+          },
+          "totalOutQty": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总出库数量"
+          }
+        },
+        "title": "ReStockPageVO",
+        "description": "库存分页列表"
+      },
+      "ReStockRecentRecordVO": {
+        "type": "object",
+        "properties": {
+          "afterQty": {
+            "type": "integer",
+            "format": "int32",
+            "description": "变动后库存"
+          },
+          "batchId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "批次ID"
+          },
+          "batchNo": {
+            "type": "string",
+            "description": "批次号"
+          },
+          "changeQty": {
+            "type": "integer",
+            "format": "int32",
+            "description": "变动数量"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间"
+          },
+          "goodsId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "商品ID"
+          },
+          "goodsName": {
+            "type": "string",
+            "description": "商品名称"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "记录ID"
+          },
+          "recordType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "记录类型(1:入库,2:出库,3:盘点调整)"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注"
+          },
+          "sellPrice": {
+            "type": "number",
+            "description": "出库售价"
+          }
+        },
+        "title": "ReStockRecentRecordVO",
+        "description": "近期库存活动记录"
+      },
+      "ReStockStatsVO": {
+        "type": "object",
+        "properties": {
+          "todayInQty": {
+            "type": "integer",
+            "format": "int32",
+            "description": "今日入库数量"
+          },
+          "todayOutQty": {
+            "type": "integer",
+            "format": "int32",
+            "description": "今日出库数量"
+          },
+          "todayProfit": {
+            "type": "number",
+            "description": "今日利润"
+          },
+          "totalStockValue": {
+            "type": "number",
+            "description": "总库存价值(按进价)"
+          }
+        },
+        "title": "ReStockStatsVO",
+        "description": "库存统计"
+      }
+    },
+    "responses": {
+      "记录不存在": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ]
+            }
+          }
+        }
+      },
+      "参数不正确": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Authorization": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      },
+      "device-id": {
+        "type": "apiKey",
+        "name": "device-id",
+        "in": "header"
+      }
+    }
+  },
+  "servers": [],
+  "security": []
+}

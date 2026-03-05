@@ -1,0 +1,462 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "dashboard",
+    "description": "dashboard api",
+    "version": "1.0-SNAPSHOT",
+    "contact": {},
+    "license": {}
+  },
+  "tags": [
+    {
+      "name": "商品管理"
+    }
+  ],
+  "paths": {
+    "/v1/api/re/good/delete": {
+      "delete": {
+        "summary": "删除",
+        "deprecated": false,
+        "description": "",
+        "operationId": "deleteUsingDELETE_1",
+        "tags": [
+          "商品管理"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonMessage%C2%ABboolean%C2%BB"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "204": {
+            "description": "No Content",
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          },
+          {
+            "device-id": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v1/api/re/good/list": {
+      "post": {
+        "summary": "列表",
+        "deprecated": false,
+        "description": "",
+        "operationId": "findListByPageUsingPOST",
+        "tags": [
+          "商品管理"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReGoodPageDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonMessage%C2%ABPageResult%C2%ABReGoodPageVO%C2%BB%C2%BB"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "201": {
+            "description": "Created",
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          },
+          {
+            "device-id": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/v1/api/re/good/upsert": {
+      "post": {
+        "summary": "更新",
+        "deprecated": false,
+        "description": "",
+        "operationId": "upsertUsingPOST",
+        "tags": [
+          "商品管理"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReGoodUpsertDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonMessage%C2%ABint%C2%BB"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "201": {
+            "description": "Created",
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          },
+          {
+            "device-id": [
+              "global"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "JsonMessage«PageResult«ReGoodPageVO»»": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PageResult%C2%ABReGoodPageVO%C2%BB"
+          },
+          "resCode": {
+            "type": "string",
+            "description": "状态码"
+          },
+          "resMsg": {
+            "type": "string",
+            "description": "提示消息"
+          }
+        },
+        "title": "JsonMessage«PageResult«ReGoodPageVO»»"
+      },
+      "JsonMessage«boolean»": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "boolean",
+            "description": "数据集"
+          },
+          "resCode": {
+            "type": "string",
+            "description": "状态码"
+          },
+          "resMsg": {
+            "type": "string",
+            "description": "提示消息"
+          }
+        },
+        "title": "JsonMessage«boolean»"
+      },
+      "JsonMessage«int»": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "integer",
+            "format": "int32",
+            "description": "数据集"
+          },
+          "resCode": {
+            "type": "string",
+            "description": "状态码"
+          },
+          "resMsg": {
+            "type": "string",
+            "description": "提示消息"
+          }
+        },
+        "title": "JsonMessage«int»"
+      },
+      "PageResult«ReGoodPageVO»": {
+        "type": "object",
+        "properties": {
+          "pageNum": {
+            "type": "integer",
+            "format": "int32",
+            "description": "页号"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "description": "每页条数"
+          },
+          "pages": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总页数"
+          },
+          "resultData": {
+            "type": "array",
+            "description": "结果集",
+            "items": {
+              "$ref": "#/components/schemas/ReGoodPageVO"
+            }
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "description": "当前页的数量"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总记录数"
+          }
+        },
+        "title": "PageResult«ReGoodPageVO»"
+      },
+      "ReGoodPageDTO": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "品牌（如：茅台、中华）"
+          },
+          "category": {
+            "type": "string",
+            "description": "分类名称"
+          },
+          "goodsName": {
+            "type": "string",
+            "description": "商品名称（如：茅台53度飞天）"
+          },
+          "orderBy": {
+            "type": "string",
+            "description": "排序字段"
+          },
+          "pageNum": {
+            "type": "integer",
+            "format": "int32",
+            "description": "页号"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "description": "每页条数"
+          },
+          "sort": {
+            "type": "string",
+            "description": "排序规则：desc降序，asc正序"
+          }
+        },
+        "title": "ReGoodPageDTO",
+        "description": "商品信息分页查询"
+      },
+      "ReGoodPageVO": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "品牌（如：茅台、中华）"
+          },
+          "category": {
+            "type": "string",
+            "description": "分类名称"
+          },
+          "goodsCode": {
+            "type": "string",
+            "description": "商品编码（SKU，唯一，如：JY-BJ-001）"
+          },
+          "goodsName": {
+            "type": "string",
+            "description": "商品名称（如：茅台53度飞天）"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "主键"
+          },
+          "img": {
+            "type": "string",
+            "description": "商品图片路径"
+          },
+          "sellPrice": {
+            "type": "number",
+            "description": "售价"
+          },
+          "spec": {
+            "type": "string",
+            "description": "规格（如：500ml/瓶、20支/包）"
+          }
+        },
+        "title": "ReGoodPageVO",
+        "description": "商品信息分页列表"
+      },
+      "ReGoodUpsertDTO": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "品牌（如：茅台、中华）"
+          },
+          "category": {
+            "type": "string",
+            "description": "分类名称"
+          },
+          "goodsName": {
+            "type": "string",
+            "description": "商品名称（如：茅台53度飞天）"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "主键"
+          },
+          "img": {
+            "type": "string",
+            "description": "商品图片路径"
+          },
+          "sellPrice": {
+            "type": "number",
+            "description": "售价"
+          }
+        },
+        "title": "ReGoodUpsertDTO",
+        "description": "商品信息新增"
+      }
+    },
+    "responses": {
+      "记录不存在": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ]
+            }
+          }
+        }
+      },
+      "参数不正确": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Authorization": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      },
+      "device-id": {
+        "type": "apiKey",
+        "name": "device-id",
+        "in": "header"
+      }
+    }
+  },
+  "servers": [],
+  "security": []
+}
