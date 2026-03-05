@@ -24,14 +24,14 @@
       {
         "pagePath": "pages/list/list",
         "text": "库存",
-        "iconPath": "resource/tab/home.png",
-        "selectedIconPath": "resource/tab/home-active.png"
+        "iconPath": "resource/tab/stock.png",
+        "selectedIconPath": "resource/tab/stock-active.png"
       },
       {
         "pagePath": "pages/user/user",
         "text": "我的",
-        "iconPath": "resource/tab/home.png",
-        "selectedIconPath": "resource/tab/home-active.png"
+        "iconPath": "resource/tab/me.png",
+        "selectedIconPath": "resource/tab/me-active.png"
       }
     ]
   },

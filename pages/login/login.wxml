@@ -1,4 +1,3 @@
-
 <view class="container">  
     <view class="toast {{showToast ? 'toast-show' : ''}}">{{toastMessage}}</view>
     <view class="banner">
@@ -15,13 +14,13 @@
           <image class="input-icon" src="../../resource/login/password.png"></image>
           <input class="password" password placeholder="请输入您的登陆密码" bindinput="onPasswordInput" />
         </view>
-        <button class="login-btn" bind:tap="login">登录</button>
+        <button class="login-btn" bindtap="login">登录</button>
     </view>
     <view class="split">
         <view class="split-line"></view>
         <text class="split-text">其他登录方式</text>
     </view>
     <view class="other-login">
-      <button class="phone-btn">手机号快捷登录</button>
+      <button class="phone-btn" catchtap="onPhoneLogin">手机号快捷登录</button>
     </view>
 </view>

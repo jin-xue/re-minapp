@@ -1,3 +1,142 @@
 <view class="container">
-  <text>列表页面</text>
+  <!-- 隐藏的canvas用于生成默认图片 -->
+  <canvas type="2d" id="defaultCanvas" style="width: 120px; height: 120px; position: absolute; left: -9999px; top: -9999px;"></canvas>
+
+  <!-- 筛选框 -->
+  <view class="filter-bar">
+    <view class="filter-item">
+      <input class="filter-input" placeholder="商品名称" bindinput="onSearchNameInput" value="{{searchName}}"/>
+    </view>
+    <view class="filter-item">
+      <picker bindchange="onSearchCategoryChange" value="{{searchCategoryIndex}}" range="{{categories}}">
+        <view class="filter-picker">
+          {{categories[searchCategoryIndex]}}
+        </view>
+      </picker>
+    </view>
+    <view class="filter-btn" bindtap="onSearch">搜索</view>
+    <view class="filter-btn clear" bindtap="onClearFilter">清除</view>
+  </view>
+
+  <!-- 列表 -->
+  <scroll-view 
+    class="stock-list" 
+    scroll-y 
+    enable-flex 
+    refresher-enabled="{{true}}"
+    refresher-triggered="{{refreshing}}"
+    refresher-threshold="{{80}}"
+    lower-threshold="{{100}}"
+    bindrefresherrefresh="onPullDownRefresh"
+    bindscrolltolower="onReachBottom"
+  >
+    <block wx:if="{{list.length > 0}}">
+      <view class="stock-item" wx:for="{{list}}" wx:key="goodsId">
+        <view class="stock-info">
+          <view class="stock-header">
+            <view class="header-left">
+              <image wx:if="{{item.img}}" class="goods-img" src="{{item.img}}" mode="aspectFill"></image>
+              <image wx:elif="{{defaultImg}}" class="goods-img" src="{{defaultImg}}" mode="aspectFill"></image>
+              <view wx:else class="goods-img goods-img-placeholder"></view>
+              <view class="goods-basic">
+                <text class="goods-name">{{item.goodsName}}</text>
+                <text class="goods-code" wx:if="{{item.goodsCode}}">{{item.goodsCode}}</text>
+              </view>
+            </view>
+            <view class="header-right">
+              <view class="delete-btn" wx:if="{{item.stockQty == 0}}" data-id="{{item.goodsId}}" catchtap="deleteGood">删除</view>
+              <view class="edit-btn" data-item="{{item}}" catchtap="showUpsertModal">编辑</view>
+            </view>
+          </view>
+          <view class="stock-details">
+            <view class="detail-tags">
+              <view class="detail-tag">
+                <text class="tag-label">库存</text>
+                <text class="tag-value">{{item.stockQty || 0}}</text>
+              </view>
+              <view class="detail-tag">
+                <text class="tag-label">进价</text>
+                <text class="tag-value">¥{{item.purchasePrice || 0}}</text>
+              </view>
+              <view class="detail-tag">
+                <text class="tag-label">售价</text>
+                <text class="tag-value">¥{{item.sellPrice || 0}}</text>
+              </view>
+              <view class="detail-tag">
+                <text class="tag-label">库存价值</text>
+                <text class="tag-value">¥{{item.stockValue || 0}}</text>
+              </view>
+              <view class="detail-tag">
+                <text class="tag-label">利润</text>
+                <text class="tag-value profit">¥{{item.profit || 0}}</text>
+              </view>
+              <view class="detail-tag">
+                <text class="tag-label">利润率</text>
+                <text class="tag-value profit">{{item.profitRate || 0}}%</text>
+              </view>
+            </view>
+          </view>
+          <view class="stock-footer">
+            <text class="footer-text">总入库: {{item.totalInQty || 0}} | 总出库: {{item.totalOutQty || 0}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    <view wx:else class="empty-tip">
+      <text>暂无库存数据</text>
+    </view>
+    
+    <view wx:if="{{loading}}" class="loading-tip">
+      <text>加载中...</text>
+    </view>
+    <view wx:if="{{noMore}}" class="loading-tip">
+      <text>没有更多了</text>
+    </view>
+  </scroll-view>
+
+  <!-- 新建/更新商品按钮 -->
+  <view class="add-btn" bindtap="showUpsertModal">
+    <text class="add-icon">+</text>
+  </view>
+
+  <!-- 商品弹窗 -->
+  <view class="modal-mask" wx:if="{{showModal}}" bindtap="closeModal"></view>
+  <view class="modal-content" wx:if="{{showModal}}">
+    <view class="modal-header">
+      <text class="modal-title">{{isEdit ? '编辑商品' : '新建商品'}}</text>
+      <text class="modal-close" bindtap="closeModal">×</text>
+    </view>
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="form-label">商品名称 *</text>
+        <input class="form-input" placeholder="请输入商品名称" bindinput="onNameInput" value="{{form.goodsName}}"/>
+      </view>
+      <view class="form-item">
+        <text class="form-label">商品分类</text>
+        <picker bindchange="onCategoryChange" value="{{categoryIndex}}" range="{{categories}}">
+          <view class="picker-box">
+            {{form.category || '请选择分类'}}
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="form-label">售价 *</text>
+        <input class="form-input" type="digit" placeholder="请输入售价" bindinput="onPriceInput" value="{{form.sellPrice}}"/>
+      </view>
+      <view class="form-item">
+        <text class="form-label">商品图片</text>
+        <view class="img-upload" bindtap="chooseImage">
+          <image wx:if="{{form.img}}" class="preview-img" src="{{form.img}}" mode="aspectFill"></image>
+          <view wx:else class="upload-placeholder">
+            <text class="upload-icon">+</text>
+            <text class="upload-text">上传图片</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="modal-btn cancel" bindtap="closeModal">取消</button>
+      <button class="modal-btn confirm" bindtap="submitForm">保存</button>
+    </view>
+  </view>
 </view>

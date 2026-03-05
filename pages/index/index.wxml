@@ -1,27 +1,124 @@
-<!--index.wxml-->
-<scroll-view class="scrollarea" scroll-y type="list">
-  <view class="container">
-    <view class="userinfo">
-      <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-          <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-        </button>
-        <view class="nickname-wrapper">
-          <text class="nickname-label">昵称</text>
-          <input type="nickname" class="nickname-input" placeholder="请输入昵称" bind:change="onInputChange" />
-        </view>
-      </block>
-      <block wx:elif="{{!hasUserInfo}}">
-        <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
-        <view wx:else> 请使用2.10.4及以上版本基础库 </view>
-      </block>
-      <block wx:else>
-        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-      </block>
+<view class="container">
+  <!-- 快速操作按钮 -->
+  <view class="quick-actions">
+    <view class="action-btn in-btn" bindtap="showStockInModal">
+      <text class="action-icon">+</text>
+      <text class="action-text">快速入库</text>
     </view>
-    <view class="usermotto">
-      <text class="user-motto">{{motto}}</text>
+    <view class="action-btn out-btn" bindtap="showStockOutModal">
+      <text class="action-icon">-</text>
+      <text class="action-text">快速出库</text>
     </view>
   </view>
-</scroll-view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-cards">
+    <view class="stat-card">
+      <text class="stat-label">总库存价值</text>
+      <text class="stat-value">¥{{stats.totalStockValue || 0}}</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-label">今日入库</text>
+      <text class="stat-value">{{stats.todayInQty || 0}}</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-label">今日出库</text>
+      <text class="stat-value">{{stats.todayOutQty || 0}}</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-label">今日利润</text>
+      <text class="stat-value profit">¥{{stats.todayProfit || 0}}</text>
+    </view>
+  </view>
+
+  <!-- 近期活动记录 -->
+  <view class="recent-section">
+    <view class="section-header">
+      <text class="section-title">近期活动记录</text>
+    </view>
+    <scroll-view class="record-list" scroll-y>
+      <block wx:if="{{records.length > 0}}">
+        <view class="record-item" wx:for="{{records}}" wx:key="id">
+          <view class="record-left">
+            <view class="record-type {{item.recordType == 1 ? 'in' : 'out'}}">
+              {{item.recordType == 1 ? '入库' : '出库'}}
+            </view>
+            <view class="record-info">
+              <text class="record-name">{{item.goodsName}}</text>
+              <text class="record-time">{{item.createTime}}</text>
+            </view>
+          </view>
+          <view class="record-right">
+            <text class="record-qty {{item.recordType == 1 ? 'in' : 'out'}}">
+              {{item.recordType == 1 ? '+' : '-'}}{{item.changeQty}}
+            </text>
+          </view>
+        </view>
+      </block>
+      <view wx:else class="empty-tip">
+        <text>暂无活动记录</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 入库弹窗 -->
+  <view class="modal-mask" wx:if="{{showInModal}}" bindtap="closeModals"></view>
+  <view class="modal-content" wx:if="{{showInModal}}">
+    <view class="modal-header">
+      <text class="modal-title">快速入库</text>
+      <text class="modal-close" bindtap="closeModals">×</text>
+    </view>
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="form-label">选择商品</text>
+        <picker bindchange="onInGoodChange" value="{{inGoodIndex}}" range="{{goodsList}}" range-key="goodsName">
+          <view class="picker-box">
+            {{inForm.goodsId ? goodsList[inGoodIndex].goodsName : '请选择商品'}}
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="form-label">入库数量</text>
+        <input class="form-input" type="number" placeholder="请输入数量" bindinput="onInQtyInput" value="{{inForm.qty}}"/>
+      </view>
+      <view class="form-item">
+        <text class="form-label">进价(选填)</text>
+        <input class="form-input" type="digit" placeholder="请输入进价" bindinput="onInPriceInput" value="{{inForm.purchasePrice}}"/>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="modal-btn cancel" bindtap="closeModals">取消</button>
+      <button class="modal-btn confirm" bindtap="submitStockIn">确定入库</button>
+    </view>
+  </view>
+
+  <!-- 出库弹窗 -->
+  <view class="modal-content" wx:if="{{showOutModal}}">
+    <view class="modal-header">
+      <text class="modal-title">快速出库</text>
+      <text class="modal-close" bindtap="closeModals">×</text>
+    </view>
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="form-label">选择商品</text>
+        <picker bindchange="onOutGoodChange" value="{{outGoodIndex}}" range="{{goodsList}}" range-key="goodsName">
+          <view class="picker-box">
+            {{outForm.goodsId ? goodsList[outGoodIndex].goodsName : '请选择商品'}}
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="form-label">出库数量</text>
+        <input class="form-input" type="number" placeholder="请输入数量" bindinput="onOutQtyInput" value="{{outForm.qty}}"/>
+      </view>
+      <view class="form-item">
+        <text class="form-label">售价</text>
+        <input class="form-input" type="digit" placeholder="请输入售价" bindinput="onOutPriceInput" value="{{outForm.sellPrice}}"/>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="modal-btn cancel" bindtap="closeModals">取消</button>
+      <button class="modal-btn confirm out" bindtap="submitStockOut">确定出库</button>
+    </view>
+  </view>
+</view>
