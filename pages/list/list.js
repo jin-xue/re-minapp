@@ -51,19 +51,19 @@ Page({
         canvas.height = res[0].height * dpr;
         ctx.scale(dpr, dpr);
         
-        ctx.fillStyle = '#f5f5f5';
-        ctx.fillRect(0, 0, 60, 60);
+        // 浅灰色背景
+        ctx.fillStyle = '#f0f0f0';
+        ctx.fillRect(0, 0, 120, 120);
         
-        ctx.fillStyle = '#147fed';
-        ctx.beginPath();
-        ctx.arc(30, 30, 20, 0, 2 * Math.PI);
-        ctx.fill();
-        
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 20px sans-serif';
+        // 灰色图标
+        ctx.fillStyle = '#cccccc';
+        ctx.font = '40px sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('商', 30, 30);
+        ctx.fillText('📦', 60, 50);
+        
+        ctx.font = '14px sans-serif';
+        ctx.fillText('暂无图片', 60, 85);
         
         setTimeout(() => {
           wx.canvasToTempFilePath({
@@ -77,6 +77,9 @@ Page({
   },
 
   onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 1 });
+    }
     const token = wx.getStorageSync('token');
     if (!token) return;
     this.loadList(false);

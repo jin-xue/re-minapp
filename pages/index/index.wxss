@@ -5,6 +5,7 @@ page {
 
 .container {
   padding: 16px;
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
 }
 
 .quick-actions {
@@ -231,8 +232,9 @@ page {
   background: #fff;
   border-radius: 24px 24px 0 0;
   z-index: 101;
-  max-height: 90vh;
+  max-height: 80vh;
   overflow-y: auto;
+  padding-bottom: 90px;
 }
 
 .modal-header {

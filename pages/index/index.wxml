@@ -50,7 +50,7 @@
           </view>
           <view class="record-right">
             <text class="record-qty {{item.recordType == 1 ? 'in' : 'out'}}">
-              {{item.recordType == 1 ? '+' : '-'}}{{item.changeQty}}
+              {{item.changeQty}}
             </text>
           </view>
         </view>
@@ -93,6 +93,7 @@
   </view>
 
   <!-- 出库弹窗 -->
+  <view class="modal-mask" wx:if="{{showOutModal}}" bindtap="closeModals"></view>
   <view class="modal-content" wx:if="{{showOutModal}}">
     <view class="modal-header">
       <text class="modal-title">快速出库</text>
@@ -112,7 +113,7 @@
         <input class="form-input" type="number" placeholder="请输入数量" bindinput="onOutQtyInput" value="{{outForm.qty}}"/>
       </view>
       <view class="form-item">
-        <text class="form-label">售价</text>
+        <text class="form-label">售价（单价）</text>
         <input class="form-input" type="digit" placeholder="请输入售价" bindinput="onOutPriceInput" value="{{outForm.sellPrice}}"/>
       </view>
     </view>

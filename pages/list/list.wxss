@@ -8,6 +8,7 @@ page {
   position: relative;
   display: flex;
   flex-direction: column;
+  padding-bottom: calc(90px + env(safe-area-inset-bottom) + 10px);
 }
 
 .filter-bar {
@@ -16,6 +17,9 @@ page {
   gap: 10px;
   padding: 12px;
   background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .filter-item {
@@ -217,7 +221,7 @@ page {
 .add-btn {
   position: fixed;
   right: 20px;
-  bottom: 40px;
+  bottom: calc(40px + 50px + env(safe-area-inset-bottom));
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -226,6 +230,7 @@ page {
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 12px rgba(20, 127, 237, 0.4);
+  z-index: 99;
 }
 
 .add-icon {
@@ -253,8 +258,9 @@ page {
   background: #fff;
   border-radius: 24px 24px 0 0;
   z-index: 101;
-  max-height: 90vh;
+  max-height: 80vh;
   overflow-y: auto;
+  padding-bottom: 90px;
 }
 
 .modal-header {

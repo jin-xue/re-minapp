@@ -14,6 +14,12 @@ Page({
     this.loadUserInfo();
   },
 
+  onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 2 });
+    }
+  },
+
   loadUserInfo() {
     api.getUserInfo().then(res => {
       if (res.resCode === '0') {
