@@ -72,7 +72,7 @@
               </view>
               <view class="detail-tag">
                 <text class="tag-label">利润率</text>
-                <text class="tag-value profit">{{item.profitRate * 100 || 0}}%</text>
+                <text class="tag-value profit">{{formatProfitRate(item.profitRate)}}%</text>
               </view>
             </view>
           </view>

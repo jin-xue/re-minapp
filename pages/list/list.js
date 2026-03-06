@@ -306,5 +306,10 @@ Page({
         }
       }
     });
+  },
+
+  formatProfitRate(rate) {
+    if (!rate && rate !== 0) return '0.00';
+    return (rate * 100).toFixed(2);
   }
 });
