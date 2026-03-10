@@ -1,5 +1,22 @@
 const BASE_URL = 'https://dashboard.datazhi.com/v1/api';
 
+const handleUnauthorized = () => {
+  try {
+    wx.removeStorageSync('token');
+  } catch (e) {}
+
+  try {
+    const pages = getCurrentPages ? getCurrentPages() : [];
+    const current = pages.length ? pages[pages.length - 1] : null;
+    const route = current && current.route ? '/' + current.route : '';
+    if (route !== '/pages/login/login') {
+      wx.reLaunch({ url: '/pages/login/login' });
+    }
+  } catch (e) {
+    wx.reLaunch({ url: '/pages/login/login' });
+  }
+};
+
 const getAuthHeader = () => {
   const token = wx.getStorageSync('token');
   return token ? { 'Authorization': token } : {};
@@ -16,7 +33,15 @@ const request = (url, method = 'GET', data = {}, header = {}) => {
         ...getAuthHeader(),
         ...header
       },
-      success: (res) => resolve(res.data),
+      success: (res) => {
+        const payload = res.data;
+        if (payload && (payload.resCode === '-1000' || payload.resCode === -1000)) {
+          handleUnauthorized();
+          reject(payload);
+          return;
+        }
+        resolve(payload);
+      },
       fail: (err) => reject(err)
     });
   });
@@ -58,12 +83,18 @@ const stockOut = (data) => {
   return request('/re/stock/out', 'POST', data);
 };
 
-const getStockStats = () => {
-  return request('/re/stock/stats', 'GET');
+const getStockStats = (params = {}) => {
+  const query = Object.entries(params)
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join('&');
+  return request('/re/stock/stats' + (query ? '?' + query : ''), 'GET');
 };
 
-const getRecentRecords = (limit = 20) => {
-  return request('/re/stock/record/recent', 'GET', { limit });
+const getRecentRecords = (limit = 20, params = {}) => {
+  const query = Object.entries(params)
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join('&');
+  return request('/re/stock/record/recent' + (query ? '?' + query : ''), 'GET');
 };
 
 const uploadFile = (filePath) => {
@@ -75,6 +106,11 @@ const uploadFile = (filePath) => {
       header: getAuthHeader(),
       success: (res) => {
         const data = JSON.parse(res.data);
+        if (data && (data.resCode === '-1000' || data.resCode === -1000)) {
+          handleUnauthorized();
+          reject(data);
+          return;
+        }
         resolve(data);
       },
       fail: (err) => reject(err)

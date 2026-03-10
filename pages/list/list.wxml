@@ -59,7 +59,7 @@
                 <text class="tag-value">¥{{item.purchasePrice || 0}}</text>
               </view>
               <view class="detail-tag">
-                <text class="tag-label">售价</text>
+                <text class="tag-label">零售价</text>
                 <text class="tag-value">¥{{item.sellPrice || 0}}</text>
               </view>
               <view class="detail-tag">
@@ -72,7 +72,7 @@
               </view>
               <view class="detail-tag">
                 <text class="tag-label">利润率</text>
-                <text class="tag-value profit">{{formatProfitRate(item.profitRate)}}%</text>
+                <text class="tag-value profit">{{item.profitRateDisplay}}%</text>
               </view>
             </view>
           </view>
@@ -120,8 +120,8 @@
         </picker>
       </view>
       <view class="form-item">
-        <text class="form-label">售价 *</text>
-        <input class="form-input" type="digit" placeholder="请输入售价" bindinput="onPriceInput" value="{{form.sellPrice}}"/>
+        <text class="form-label">零售价 *</text>
+        <input class="form-input" type="digit" placeholder="请输入零售价" bindinput="onPriceInput" value="{{form.sellPrice}}"/>
       </view>
       <view class="form-item">
         <text class="form-label">商品图片</text>

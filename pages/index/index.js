@@ -1,5 +1,13 @@
 const api = require('../../utils/api.js');
 
+const getTodayDate = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 Page({
   data: {
     stats: {},
@@ -9,6 +17,9 @@ Page({
     showOutModal: false,
     inGoodIndex: 0,
     outGoodIndex: 0,
+    startTime: getTodayDate(),
+    endTime: getTodayDate(),
+    showQuickModal: false,
     inForm: {
       goodsId: null,
       qty: '',
@@ -55,7 +66,8 @@ Page({
   },
 
   loadStats() {
-    api.getStockStats().then(res => {
+    const { startTime, endTime } = this.data;
+    api.getStockStats({ startTime, endTime }).then(res => {
       if (res.resCode === '0') {
         this.setData({ stats: res.data || {} });
       }
@@ -63,11 +75,56 @@ Page({
   },
 
   loadRecentRecords() {
-    api.getRecentRecords(20).then(res => {
+    const { startTime, endTime } = this.data;
+    api.getRecentRecords(20, { startTime, endTime }).then(res => {
       if (res.resCode === '0') {
         this.setData({ records: res.data || [] });
       }
     });
+  },
+
+  onStartTimeChange(e) {
+    this.setData({ startTime: e.detail.value });
+    this.loadStats();
+    this.loadRecentRecords();
+  },
+
+  onEndTimeChange(e) {
+    this.setData({ endTime: e.detail.value });
+    this.loadStats();
+    this.loadRecentRecords();
+  },
+
+  showQuickOptions() {
+    this.setData({ showQuickModal: true });
+  },
+
+  closeQuickModal() {
+    this.setData({ showQuickModal: false });
+  },
+
+  selectQuickRange(e) {
+    const days = parseInt(e.currentTarget.dataset.days);
+    const single = String(e.currentTarget.dataset.single || '') === '1';
+    const today = new Date();
+    const startDate = new Date(today.getTime() - days * 24 * 60 * 60 * 1000);
+
+    const formatDate = (d) => {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    const endDate = single ? startDate : today;
+
+    this.setData({
+      startTime: formatDate(startDate),
+      endTime: formatDate(endDate),
+      showQuickModal: false
+    });
+    this.loadStats();
+    this.loadRecentRecords();
   },
 
   showStockInModal() {

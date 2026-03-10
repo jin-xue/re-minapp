@@ -11,6 +11,39 @@
     </view>
   </view>
 
+  <!-- 时间筛选器 -->
+  <view class="time-filter">
+    <view class="time-picker-wrapper">
+      <picker mode="date" value="{{startTime}}" bindchange="onStartTimeChange">
+        <view class="time-picker">
+          <text>{{startTime}}</text>
+        </view>
+      </picker>
+    </view>
+    <view class="time-separator-wrapper" bindtap="showQuickOptions">
+      <text class="time-separator">至</text>
+    </view>
+    <view class="time-picker-wrapper">
+      <picker mode="date" value="{{endTime}}" bindchange="onEndTimeChange">
+        <view class="time-picker">
+          <text>{{endTime}}</text>
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 快捷选项弹窗 -->
+  <view class="modal-mask" wx:if="{{showQuickModal}}" bindtap="closeQuickModal"></view>
+  <view class="quick-options" wx:if="{{showQuickModal}}">
+    <view class="quick-option" bindtap="selectQuickRange" data-days="0">今天</view>
+    <view class="quick-option" bindtap="selectQuickRange" data-days="1" data-single="1">昨天</view>
+    <view class="quick-option" bindtap="selectQuickRange" data-days="2" data-single="1">前天</view>
+    <view class="quick-option" bindtap="selectQuickRange" data-days="3">近3天</view>
+    <view class="quick-option" bindtap="selectQuickRange" data-days="7">近7天</view>
+    <view class="quick-option" bindtap="selectQuickRange" data-days="30">近一月</view>
+    <view class="quick-option" bindtap="selectQuickRange" data-days="90">近3月</view>
+  </view>
+
   <!-- 统计卡片 -->
   <view class="stats-cards">
     <view class="stat-card">
@@ -82,7 +115,7 @@
         <input class="form-input" type="number" placeholder="请输入数量" bindinput="onInQtyInput" value="{{inForm.qty}}"/>
       </view>
       <view class="form-item">
-        <text class="form-label">进价(选填)</text>
+        <text class="form-label">进价（单价）</text>
         <input class="form-input" type="digit" placeholder="请输入进价" bindinput="onInPriceInput" value="{{inForm.purchasePrice}}"/>
       </view>
     </view>

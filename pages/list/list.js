@@ -103,10 +103,21 @@ Page({
     if (this.data.searchCategoryIndex > 0) {
       searchData.category = categories[this.data.searchCategoryIndex];
     }
+
+    const formatProfitRate = (rate) => {
+      if (rate === undefined || rate === null || rate === '') return '0.00';
+      const num = parseFloat(rate);
+      if (isNaN(num)) return '0.00';
+      return (num * 100).toFixed(2);
+    };
     
     api.getStockList(searchData).then(res => {
       if (res.resCode === '0') {
-        const newList = res.data.resultData || [];
+        const resultData = res.data?.resultData || [];
+        const newList = resultData.map(item => ({
+          ...item,
+          profitRateDisplay: formatProfitRate(item.profitRate)
+        }));
         this.setData({
           list: loadMore ? [...this.data.list, ...newList] : newList,
           pageNum: pageNum,
@@ -307,9 +318,4 @@ Page({
       }
     });
   },
-
-  formatProfitRate(rate) {
-    if (!rate && rate !== 0) return '0.00';
-    return (rate * 100).toFixed(2);
-  }
 });

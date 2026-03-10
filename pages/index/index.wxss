@@ -14,6 +14,84 @@ page {
   margin-bottom: 16px;
 }
 
+.time-filter {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 12px;
+  background: #fff;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.time-picker-wrapper {
+  flex: 1;
+}
+
+.time-picker {
+  height: 36px;
+  font-size: 14px;
+  color: #333;
+  padding: 0 8px;
+  box-sizing: border-box;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.time-separator-wrapper {
+  width: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.time-separator {
+  color: #999;
+  font-size: 14px;
+}
+
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+.quick-options {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  z-index: 1000;
+  padding-bottom: calc(60px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 -8px 24px rgba(0,0,0,0.12);
+}
+
+.quick-option {
+  background: #fff;
+  padding: 14px;
+  text-align: center;
+  font-size: 16px;
+  color: #333;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.quick-option:last-child {
+  margin-bottom: 0;
+}
+
 .action-btn {
   flex: 1;
   height: 80px;
